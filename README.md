@@ -3,13 +3,13 @@ Hands-on SOC analyst simulation using Splunk Enterprise using BOTSv3
 dataset (~1.9M events). Covers Tier 1–2 analyst workflows: threat hunting, writing
 SPL detection rules, and building a live monitoring dashboard.
 ## Objective
-Simulate a SOC analyst environment by investigating realistic attack scenarios,
+To simulate a SOC analyst environment by investigating realistic attack scenarios,
 writing detection rules that would automatically alert on each threat,
 and mapping all findings to MITRE ATT&CK.
  
 ## Dataset
  
-**BOTSv3** — Boss of the SOC v3 by Splunk (~1.9M events, 107 sourcetypes)
+**I used BOTSv3** (~1.9M events, 107 sourcetypes)
  
 Key sourcetypes used:
 - `wineventlog:security` (46,469 events) — Windows Security logs
@@ -19,11 +19,8 @@ Key sourcetypes used:
  
 ### 1. LOLBin Execution — Living off the Land
 **MITRE:** T1218, T1059.003
- 
-Hunted for abuse of native Windows tools (reg.exe, WMIC.exe, cmd.exe, certutil.exe)
-used by attackers to blend in with normal system activity. Identified machine accounts
-(ending in $) executing these tools interactively — a strong indicator of malware
-running under SYSTEM context. Key hosts involved: BSTOLL-L, PCERF-L, FYODOR-L.
+
+Tracked suspicious use of built-in Windows tools like reg.exe, WMIC.exe, cmd.exe, and certutil.exe — the kind attackers often use to blend in with normal activity. Noticed machine accounts (ending with $) running these tools interactively, which usually points to malware executing under SYSTEM. The main hosts involved were BSTOLL-L, PCERF-L, and FYODOR-L.
  
 **Detection Rule:**
 ```spl
@@ -127,12 +124,7 @@ index=botsv3 sourcetype="wineventlog:security" (EventCode=4648 OR EventCode=4624
 
 ## Lessons Learned
 
-- SPL field extraction doesn't always work out of the box — Sysmon logs required 
-  manual `rex` parsing due to XML formatting, which taught me to always verify 
-  field extraction before building detections
-- Real attack data is messy. Finding the C2 chain required pivoting between multiple 
-  queries and sourcetypes, not just running a single search
-- MITRE ATT&CK mapping becomes natural once you understand what the attacker is 
-  actually trying to accomplish at each step
-- Building detection rules forces you to think like an attacker — you need to 
-  understand the technique before you can detect it
+- SPL field extraction isn’t always plug-and-play — Sysmon logs didn’t parse cleanly in my setup, so I had to use `rex` to pull fields from the XML. Reinforced the need to verify extraction before building detections
+- Real attack data is messy. Tracing the C2 chain meant pivoting across multiple queries and sourcetypes, not just running one search
+- MITRE ATT&CK mapping gets easier once you actually understand what the attacker is doing at each step
+- Writing detection rules forces you to think like an attacker — you need to understand the technique before you can catch it
