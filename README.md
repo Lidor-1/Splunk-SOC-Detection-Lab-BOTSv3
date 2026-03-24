@@ -76,7 +76,8 @@ Key findings:
 <img width="1920" height="958" alt="powershell_c2_chain" src="https://github.com/user-attachments/assets/b8ca4b77-c7d3-4ff0-81ce-0f91effce66b" />
 
 **Saved Detection Alert:**
-![Powershell alert1](https://github.com/user-attachments/assets/bb33cda4-3e8d-4fd6-bdfb-6cc4fdc1b9ca)
+
+<img width="1920" height="958" alt="powershell_alert" src="https://github.com/user-attachments/assets/37a6402a-285c-45cb-8cdb-0b861d8e723b" />
 
  
 **Detection Rule (SPL):**
